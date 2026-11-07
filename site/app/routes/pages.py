@@ -45,8 +45,8 @@ async def route_home(request: Request):
         {"code": "15000-plus", "label": "от 15 000 ₽", "desc": "Гранд-композиции и эксклюзивные сорта", "count": 2},
     ]
     return templates.TemplateResponse(
-        "index.html",
-        {
+        name="index.html",
+        context={
             "request": request,
             "budget_ranges": budget_ranges,
             "ready_bouquets": ready_bouquets,
@@ -87,8 +87,8 @@ async def route_catalog(
     has_active_filters = bool(budget or size or palette or occasion or ready_today)
 
     return templates.TemplateResponse(
-        "catalog.html",
-        {
+        name="catalog.html",
+        context={
             "request": request,
             "bouquets": bouquets,
             "filters": filters,
@@ -113,8 +113,8 @@ async def route_bouquet_detail(request: Request, slug: str):
     similar_bouquets = [b for b in get_bouquets(limit=4) if b["slug"] != slug][:3]
 
     return templates.TemplateResponse(
-        "bouquet_detail.html",
-        {
+        name="bouquet_detail.html",
+        context={
             "request": request,
             "bouquet": bouquet,
             "similar_bouquets": similar_bouquets,
@@ -139,8 +139,8 @@ async def route_order_page(
     all_tags = get_all_tags()
 
     return templates.TemplateResponse(
-        "order.html",
-        {
+        name="order.html",
+        context={
             "request": request,
             "selected_bouquet": selected_bouquet,
             "initial_budget": budget or (selected_bouquet["price"] if selected_bouquet else None),
@@ -251,8 +251,8 @@ async def route_order_success(request: Request, request_id: int):
         raise HTTPException(status_code=404, detail="Заявка не найдена")
 
     return templates.TemplateResponse(
-        "success.html",
-        {
+        name="success.html",
+        context={
             "request": request,
             "lead": lead,
             "size_map": SIZE_MAP,
@@ -265,10 +265,10 @@ async def route_order_success(request: Request, request_id: int):
 @router.get("/how", response_class=HTMLResponse, summary="Доставка и получение")
 async def route_how(request: Request):
     """Страница с информацией о доставке, самовывозе и бережной упаковке."""
-    return templates.TemplateResponse("how.html", {"request": request})
+    return templates.TemplateResponse(name="how.html", context={"request": request})
 
 
 @router.get("/privacy", response_class=HTMLResponse, summary="Политика конфиденциальности")
 async def route_privacy(request: Request):
     """Политика конфиденциальности персональных данных (152-ФЗ)."""
-    return templates.TemplateResponse("privacy.html", {"request": request})
+    return templates.TemplateResponse(name="privacy.html", context={"request": request})
