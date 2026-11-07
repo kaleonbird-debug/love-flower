@@ -1092,10 +1092,32 @@ a:hover {
     grid-template-columns: 1fr;
   }
   .header-inner {
-    height: 70px;
+    height: auto;
+    min-height: 64px;
+    padding: 10px 0;
+    flex-wrap: wrap;
+    gap: 10px 12px;
+  }
+  .brand-logo-img {
+    height: 36px;
   }
   .site-nav {
     display: none; /* Для мобильных упрощенная навигация */
+  }
+  .header-actions {
+    gap: 8px;
+    margin-left: auto;
+    flex-wrap: wrap;
+  }
+  .header-phone {
+    font-size: 0.82rem;
+    white-space: nowrap;
+    letter-spacing: 0;
+  }
+  .header-actions .btn {
+    padding: 9px 14px;
+    font-size: 0.72rem;
+    letter-spacing: 0.03em;
   }
   .delivery-radio-group {
     grid-template-columns: 1fr;
@@ -1107,5 +1129,62 @@ a:hover {
     flex-direction: column;
     gap: 8px;
     text-align: center;
+  }
+}
+
+/* Очень узкие экраны: телефон и кнопка в две строки */
+@media (max-width: 400px) {
+  .header-actions {
+    width: 100%;
+    justify-content: space-between;
+    margin-left: 0;
+  }
+  .header-actions .btn {
+    flex: 1 1 auto;
+    text-align: center;
+  }
+  .section-title {
+    font-size: 1.5rem;
+  }
+  .btn-block {
+    width: 100%;
+  }
+}
+
+/* ─── УТИЛИТЫ-СЕТКИ (заменили инлайн-стили в шаблонах) ───────────────────── */
+.grid-2col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.grid-3col {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+}
+
+@media (max-width: 900px) {
+  .grid-3col {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 640px) {
+  .grid-2col,
+  .grid-3col {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+
+  /* Каталог и карточки: убираем возможный горизонтальный скролл */
+  .container {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
+  img,
+  table,
+  pre {
+    max-width: 100%;
   }
 }

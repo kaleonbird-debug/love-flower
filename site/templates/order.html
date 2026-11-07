@@ -45,7 +45,7 @@
             Параметры подбора букета:
           </div>
 
-          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px;">
+          <div class="grid-2col" style="margin-bottom: 12px;">
             <div>
               <label class="form-label">Бюджет</label>
               <select name="budget_range" class="form-select">
@@ -82,7 +82,7 @@
         {% endif %}
 
         <!-- Основные контакты клиента -->
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+        <div class="grid-2col">
           <div class="form-group">
             <label for="customer_name" class="form-label">Ваше имя</label>
             <input type="text" id="customer_name" name="customer_name" class="form-input" placeholder="Как к вам обращаться" autocomplete="name">
@@ -131,7 +131,7 @@
         </div>
 
         <!-- Дата и время -->
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+        <div class="grid-2col">
           <div class="form-group">
             <label for="delivery_date" class="form-label">Дата получения</label>
             <select id="delivery_date" name="delivery_date" class="form-select">
