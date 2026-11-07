@@ -17,7 +17,10 @@ TEMPLATES_DIR = BASE_DIR / "templates"
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     # При старте приложения инициализируем БД и проверяем наличие данных
-    init_db()
+    try:
+        init_db()
+    except Exception as e:
+        print(f"[WARN] init_db failed: {e}", flush=True)
     yield
 
 
