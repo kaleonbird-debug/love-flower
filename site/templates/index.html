@@ -1,0 +1,128 @@
+{% extends "base.html" %}
+
+{% block title %}ЛавФловер — Цветы под ваш бюджет за 5 минут{% endblock %}
+
+{% block content %}
+<!-- Герой-блок с входными кнопками бюджетов -->
+<section class="hero-section">
+  <div class="container">
+    <div class="hero-subtitle-top">Салон цветов «ЛавФловер» / LoveFlower</div>
+    <h1 class="hero-title">Идеальный букет под ваш бюджет без лишних согласований</h1>
+    <p class="hero-desc">
+      От вас — только бюджет, размер и настроение. Состав, свежесть и быструю доставку бережно контролирует наш шеф-флорист.
+    </p>
+
+    <!-- 5 кнопок-диапазонов бюджета -->
+    <div class="budget-selection-wrap">
+      <div class="section-label">С какого бюджета начнём подбор?</div>
+      <div class="budget-cards-grid">
+        {% for b in budget_ranges %}
+        <a href="/catalog?budget={{ b.code }}" class="budget-card">
+          <div>
+            <div class="budget-card-title">{{ b.label }}</div>
+            <div class="budget-card-desc">{{ b.desc }}</div>
+          </div>
+          <div class="budget-card-arrow">
+            Смотреть варианты &rarr;
+          </div>
+        </a>
+        {% endfor %}
+      </div>
+
+      <div class="hero-view-all">
+        <a href="/catalog">Или посмотреть все букеты каталога &rarr;</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Витрина букетов «Можно сегодня» -->
+{% if ready_bouquets %}
+<section class="section">
+  <div class="container">
+    <div class="section-header">
+      <div>
+        <h2 class="section-title">Готовы к доставке сегодня</h2>
+        <p class="section-subtitle">Свежая витрина — соберём и передадим курьеру за 30–60 минут</p>
+      </div>
+      <div>
+        <a href="/catalog?ready_today=1" class="btn btn-outline btn-sm">Вся витрина сегодня</a>
+      </div>
+    </div>
+
+    <div class="bouquets-grid">
+      {% for item in ready_bouquets %}
+      <div class="bouquet-card">
+        <a href="/catalog/{{ item.slug }}" class="bouquet-card-image-wrap">
+          <img src="{{ item.cover_image }}" alt="{{ item.title }}" class="bouquet-card-image" loading="lazy">
+          <span class="badge-ready">Сегодня</span>
+          <span class="badge-size">
+            {% if item.size_code == 'compact' %}S • Компакт{% elif item.size_code == 'large' %}L • Большой{% else %}M • Стандарт{% endif %}
+          </span>
+        </a>
+
+        <div class="bouquet-card-body">
+          <div class="bouquet-card-tags">
+            {% for p in item.palette_names %}
+            <span class="tag-pill">{{ p }}</span>
+            {% endfor %}
+          </div>
+
+          <a href="/catalog/{{ item.slug }}">
+            <h3 class="bouquet-card-title">{{ item.title }}</h3>
+          </a>
+          <div class="bouquet-card-dimensions">{{ item.dimensions }}</div>
+
+          <div class="bouquet-card-footer">
+            <div class="bouquet-price-value">
+              {% if item.is_price_from %}<span class="bouquet-price-from">от</span>{% endif %}
+              {{ item.price | format_price }} ₽
+            </div>
+            <a href="/order?bouquet={{ item.slug }}" class="btn btn-primary btn-sm">Хочу такой</a>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endif %}
+
+<!-- Как мы работаем -->
+<section class="section" style="background-color: var(--color-surface); border-top: 1px solid var(--color-border); border-bottom: 1px solid var(--color-border);">
+  <div class="container">
+    <div style="text-align: center; max-width: 650px; margin: 0 auto 40px;">
+      <h2 class="section-title" style="margin-bottom: 8px;">Выбор цветов за 5 минут</h2>
+      <p style="color: var(--color-text-secondary); font-size: 0.95rem;">
+        Никаких сложных конструкторов «собери из 100 позиций». Флористика — это искусство, доверьте детали профессионалам.
+      </p>
+    </div>
+
+    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px;">
+      <div style="background: var(--color-white); border: 1px solid var(--color-border); padding: 28px; border-radius: var(--radius-md);">
+        <div style="font-size: 1.6rem; font-weight: 700; color: var(--color-text-muted); margin-bottom: 12px;">01</div>
+        <h3 style="font-size: 1.15rem; font-weight: 600; margin-bottom: 8px;">Бюджет и габариты</h3>
+        <p style="font-size: 0.9rem; color: var(--color-text-secondary); line-height: 1.5;">
+          Вы определяете комфортную сумму и размер композиции — от компактного комплимента до гранд-букета.
+        </p>
+      </div>
+
+      <div style="background: var(--color-white); border: 1px solid var(--color-border); padding: 28px; border-radius: var(--radius-md);">
+        <div style="font-size: 1.6rem; font-weight: 700; color: var(--color-text-muted); margin-bottom: 12px;">02</div>
+        <h3 style="font-size: 1.15rem; font-weight: 600; margin-bottom: 8px;">Палитра и настроение</h3>
+        <p style="font-size: 0.9rem; color: var(--color-text-secondary); line-height: 1.5;">
+          Выбираете готовую модель из каталога или указываете цветовую гамму: нежную, яркую, белую или винную.
+        </p>
+      </div>
+
+      <div style="background: var(--color-white); border: 1px solid var(--color-border); padding: 28px; border-radius: var(--radius-md);">
+        <div style="font-size: 1.6rem; font-weight: 700; color: var(--color-text-muted); margin-bottom: 12px;">03</div>
+        <h3 style="font-size: 1.15rem; font-weight: 600; margin-bottom: 8px;">Фото перед отправкой</h3>
+        <p style="font-size: 0.9rem; color: var(--color-text-secondary); line-height: 1.5;">
+          Флорист собирает свежий букет, отправляет фотоотчёт и бережно передаёт курьеру в аквапаке с водой.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

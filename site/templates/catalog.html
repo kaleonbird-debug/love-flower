@@ -1,0 +1,161 @@
+{% extends "base.html" %}
+
+{% block title %}Каталог букетов — ЛавФловер (LoveFlower){% endblock %}
+
+{% block content %}
+<div class="container catalog-page-layout">
+  <div class="catalog-header-block">
+    <h1 class="catalog-title">Каталог букетов</h1>
+    <p style="color: var(--color-text-secondary); font-size: 1rem;">
+      Выберите желаемый бюджет, размер и оттенки. Доставка в транспортировочной коробке с аквапаком.
+    </p>
+  </div>
+
+  <!-- Панель фильтров -->
+  <div class="filters-wrapper">
+    <!-- Фильтр 1: БЮДЖЕТ (Главный) -->
+    <div class="filters-row">
+      <div class="filter-group-title">Бюджет:</div>
+      <div class="filter-chips">
+        <a href="/catalog?{% if filters.size %}size={{ filters.size }}&{% endif %}{% if filters.palette %}palette={{ filters.palette }}&{% endif %}{% if filters.ready_today %}ready_today=1&{% endif %}{% if filters.sort %}sort={{ filters.sort }}{% endif %}"
+           class="filter-chip {% if not filters.budget %}active{% endif %}">
+          Все
+        </a>
+        <a href="/catalog?budget=0-3500{% if filters.size %}&size={{ filters.size }}{% endif %}{% if filters.palette %}&palette={{ filters.palette }}{% endif %}{% if filters.ready_today %}&ready_today=1{% endif %}{% if filters.sort %}&sort={{ filters.sort }}{% endif %}"
+           class="filter-chip {% if filters.budget == '0-3500' %}active{% endif %}">
+          до 3 500 ₽
+        </a>
+        <a href="/catalog?budget=3500-5500{% if filters.size %}&size={{ filters.size }}{% endif %}{% if filters.palette %}&palette={{ filters.palette }}{% endif %}{% if filters.ready_today %}&ready_today=1{% endif %}{% if filters.sort %}&sort={{ filters.sort }}{% endif %}"
+           class="filter-chip {% if filters.budget == '3500-5500' %}active{% endif %}">
+          3 500 – 5 500 ₽
+        </a>
+        <a href="/catalog?budget=5500-10000{% if filters.size %}&size={{ filters.size }}{% endif %}{% if filters.palette %}&palette={{ filters.palette }}{% endif %}{% if filters.ready_today %}&ready_today=1{% endif %}{% if filters.sort %}&sort={{ filters.sort }}{% endif %}"
+           class="filter-chip {% if filters.budget == '5500-10000' %}active{% endif %}">
+          5 500 – 10 000 ₽
+        </a>
+        <a href="/catalog?budget=10000-15000{% if filters.size %}&size={{ filters.size }}{% endif %}{% if filters.palette %}&palette={{ filters.palette }}{% endif %}{% if filters.ready_today %}&ready_today=1{% endif %}{% if filters.sort %}&sort={{ filters.sort }}{% endif %}"
+           class="filter-chip {% if filters.budget == '10000-15000' %}active{% endif %}">
+          10 000 – 15 000 ₽
+        </a>
+        <a href="/catalog?budget=15000-plus{% if filters.size %}&size={{ filters.size }}{% endif %}{% if filters.palette %}&palette={{ filters.palette }}{% endif %}{% if filters.ready_today %}&ready_today=1{% endif %}{% if filters.sort %}&sort={{ filters.sort }}{% endif %}"
+           class="filter-chip {% if filters.budget == '15000-plus' %}active{% endif %}">
+          от 15 000 ₽
+        </a>
+      </div>
+    </div>
+
+    <!-- Фильтр 2: РАЗМЕР -->
+    <div class="filters-row">
+      <div class="filter-group-title">Размер:</div>
+      <div class="filter-chips">
+        <a href="/catalog?{% if filters.budget %}budget={{ filters.budget }}&{% endif %}{% if filters.palette %}palette={{ filters.palette }}&{% endif %}{% if filters.ready_today %}ready_today=1&{% endif %}{% if filters.sort %}sort={{ filters.sort }}{% endif %}"
+           class="filter-chip {% if not filters.size %}active{% endif %}">
+          Любой
+        </a>
+        <a href="/catalog?{% if filters.budget %}budget={{ filters.budget }}&{% endif %}size=compact{% if filters.palette %}&palette={{ filters.palette }}{% endif %}{% if filters.ready_today %}&ready_today=1{% endif %}{% if filters.sort %}&sort={{ filters.sort }}{% endif %}"
+           class="filter-chip {% if filters.size == 'compact' %}active{% endif %}">
+          Компактный (S)
+        </a>
+        <a href="/catalog?{% if filters.budget %}budget={{ filters.budget }}&{% endif %}size=standard{% if filters.palette %}&palette={{ filters.palette }}{% endif %}{% if filters.ready_today %}&ready_today=1{% endif %}{% if filters.sort %}&sort={{ filters.sort }}{% endif %}"
+           class="filter-chip {% if filters.size == 'standard' %}active{% endif %}">
+          Стандартный (M)
+        </a>
+        <a href="/catalog?{% if filters.budget %}budget={{ filters.budget }}&{% endif %}size=large{% if filters.palette %}&palette={{ filters.palette }}{% endif %}{% if filters.ready_today %}&ready_today=1{% endif %}{% if filters.sort %}&sort={{ filters.sort }}{% endif %}"
+           class="filter-chip {% if filters.size == 'large' %}active{% endif %}">
+          Большой (L)
+        </a>
+      </div>
+    </div>
+
+    <!-- Фильтр 3: ЦВЕТОВАЯ ГАММА (Опционально) -->
+    <div class="filters-row">
+      <div class="filter-group-title">Палитра:</div>
+      <div class="filter-chips">
+        <a href="/catalog?{% if filters.budget %}budget={{ filters.budget }}&{% endif %}{% if filters.size %}size={{ filters.size }}&{% endif %}{% if filters.ready_today %}ready_today=1&{% endif %}{% if filters.sort %}sort={{ filters.sort }}{% endif %}"
+           class="filter-chip {% if not filters.palette %}active{% endif %}">
+          Все палитры
+        </a>
+        {% for tag in all_tags.get('palette', []) %}
+        <a href="/catalog?{% if filters.budget %}budget={{ filters.budget }}&{% endif %}{% if filters.size %}size={{ filters.size }}&{% endif %}palette={{ tag.slug }}{% if filters.ready_today %}&ready_today=1{% endif %}{% if filters.sort %}&sort={{ filters.sort }}{% endif %}"
+           class="filter-chip {% if filters.palette == tag.slug %}active{% endif %}">
+          {{ tag.name }}
+        </a>
+        {% endfor %}
+      </div>
+    </div>
+
+    <!-- Дополнительные параметры: Наличие и сброс -->
+    <div class="filters-row">
+      <label class="filter-toggle-label">
+        <input type="checkbox" id="ready-today-filter" class="filter-toggle-checkbox" {% if filters.ready_today %}checked{% endif %}>
+        <span>Только в наличии сегодня (сборка за 1 час)</span>
+      </label>
+
+      {% if has_active_filters %}
+      <a href="/catalog" class="filter-reset-btn">✕ Сбросить все фильтры</a>
+      {% endif %}
+    </div>
+  </div>
+
+  <!-- Мета-бар: Количество и сортировка -->
+  <div class="catalog-meta-bar">
+    <div>
+      Найдено композиций: <b>{{ bouquets | length }}</b>
+    </div>
+    <div style="display: flex; align-items: center; gap: 8px;">
+      <span>Сортировка:</span>
+      <select id="catalog-sort-select" class="sort-select">
+        <option value="popular" {% if filters.sort == 'popular' %}selected{% endif %}>По популярности</option>
+        <option value="price_asc" {% if filters.sort == 'price_asc' %}selected{% endif %}>Сначала недорогие</option>
+        <option value="price_desc" {% if filters.sort == 'price_desc' %}selected{% endif %}>Сначала премиальные</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- Сетка букетов -->
+  {% if bouquets %}
+  <div class="bouquets-grid">
+    {% for item in bouquets %}
+    <div class="bouquet-card">
+      <a href="/catalog/{{ item.slug }}" class="bouquet-card-image-wrap">
+        <img src="{{ item.cover_image }}" alt="{{ item.title }}" class="bouquet-card-image" loading="lazy">
+        {% if item.is_ready_today %}
+        <span class="badge-ready">Сегодня</span>
+        {% endif %}
+        <span class="badge-size">
+          {% if item.size_code == 'compact' %}S • Компакт{% elif item.size_code == 'large' %}L • Большой{% else %}M • Стандарт{% endif %}
+        </span>
+      </a>
+
+      <div class="bouquet-card-body">
+        <div class="bouquet-card-tags">
+          {% for p in item.palette_names %}
+          <span class="tag-pill">{{ p }}</span>
+          {% endfor %}
+        </div>
+
+        <a href="/catalog/{{ item.slug }}">
+          <h3 class="bouquet-card-title">{{ item.title }}</h3>
+        </a>
+        <div class="bouquet-card-dimensions">{{ item.dimensions }}</div>
+
+        <div class="bouquet-card-footer">
+          <div class="bouquet-price-value">
+            {% if item.is_price_from %}<span class="bouquet-price-from">от</span>{% endif %}
+            {{ item.price | format_price }} ₽
+          </div>
+          <a href="/order?bouquet={{ item.slug }}" class="btn btn-primary btn-sm">Хочу такой</a>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  {% else %}
+  <div style="text-align: center; padding: 64px 20px; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-md);">
+    <h3 style="font-size: 1.4rem; margin-bottom: 8px;">Композиций с такими фильтрами не найдено</h3>
+    <p style="color: var(--color-text-secondary); margin-bottom: 24px;">Попробуйте смягчить параметры поиска или сбросить фильтры.</p>
+    <a href="/catalog" class="btn btn-outline">Показать все букеты</a>
+  </div>
+  {% endif %}
+</div>
+{% endblock %}

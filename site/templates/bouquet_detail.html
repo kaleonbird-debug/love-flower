@@ -1,0 +1,128 @@
+{% extends "base.html" %}
+
+{% block title %}{{ bouquet.title }} — Цветочный салон ЛавФловер{% endblock %}
+
+{% block content %}
+<div class="container detail-layout">
+  <!-- Хлебные крошки -->
+  <nav class="detail-breadcrumbs">
+    <a href="/">Главная</a>
+    <span>/</span>
+    <a href="/catalog">Каталог</a>
+    <span>/</span>
+    <span style="color: var(--color-text);">{{ bouquet.title }}</span>
+  </nav>
+
+  <div class="detail-grid">
+    <!-- Левая колонка: Фотография букета -->
+    <div class="detail-gallery">
+      <div class="detail-main-image-wrap">
+        <img src="{{ bouquet.cover_image }}" alt="{{ bouquet.title }}" class="detail-main-image">
+      </div>
+    </div>
+
+    <!-- Правая колонка: Детали, цена и кнопка заказа -->
+    <div class="detail-content">
+      <div class="detail-badge-row">
+        {% if bouquet.is_ready_today %}
+        <span class="badge-ready" style="position: static;">Доступен сегодня (1–2 ч)</span>
+        {% else %}
+        <span class="tag-pill" style="font-weight: 600;">Под заказ (за 24 ч)</span>
+        {% endif %}
+
+        <span class="tag-pill" style="font-weight: 600;">
+          {{ size_map.get(bouquet.size_code, bouquet.size_code) }}
+        </span>
+      </div>
+
+      <h1 class="detail-title">{{ bouquet.title }}</h1>
+
+      <div class="detail-price-box">
+        <div class="detail-price">
+          {% if bouquet.is_price_from %}<span class="bouquet-price-from">от</span>{% endif %}
+          {{ bouquet.price | format_price }} ₽
+        </div>
+        <div class="detail-price-sub">включает фирменную упаковку и аквапак</div>
+      </div>
+
+      <!-- Характеристики -->
+      <table class="detail-spec-table">
+        <tbody>
+          <tr>
+            <td class="detail-spec-label">Размер букета</td>
+            <td class="detail-spec-val">{{ size_map.get(bouquet.size_code, bouquet.size_code) }}</td>
+          </tr>
+          <tr>
+            <td class="detail-spec-label">Габариты</td>
+            <td class="detail-spec-val">{{ bouquet.dimensions }}</td>
+          </tr>
+          <tr>
+            <td class="detail-spec-label">Цветовая гамма</td>
+            <td class="detail-spec-val">
+              {% if bouquet.palette_names %}
+                {{ bouquet.palette_names | join(", ") }}
+              {% else %}
+                Гармоничная авторская
+              {% endif %}
+            </td>
+          </tr>
+          <tr>
+            <td class="detail-spec-label">Срок сборки</td>
+            <td class="detail-spec-val">от {{ bouquet.lead_time_hours }} ч</td>
+          </tr>
+          <tr>
+            <td class="detail-spec-label">Стойкость</td>
+            <td class="detail-spec-val">5–9 дней (при регулярной смене воды)</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <!-- Описание -->
+      <div class="detail-desc">
+        {{ bouquet.description }}
+      </div>
+
+      <!-- Кнопка заказа -->
+      <div class="detail-actions">
+        <a href="/order?bouquet={{ bouquet.slug }}" class="btn btn-primary btn-lg">
+          Хочу такой букет &rarr;
+        </a>
+        <a href="/catalog" class="btn btn-outline">
+          ← Вернуться в каталог
+        </a>
+      </div>
+
+      <!-- Заметка о живых цветах -->
+      <div class="detail-guarantee">
+        <b>🌿 Гарантия свежести:</b> Мы собираем каждый букет только из свежих поставок. Перед отправкой курьера флорист пришлет вам фото готовой работы в мессенджер.
+      </div>
+    </div>
+  </div>
+
+  <!-- Похожие варианты -->
+  {% if similar_bouquets %}
+  <div style="margin-top: 80px; padding-top: 40px; border-top: 1px solid var(--color-border);">
+    <h3 style="font-family: var(--font-serif); font-size: 1.8rem; margin-bottom: 24px;">Вам также могут понравиться</h3>
+    <div class="bouquets-grid">
+      {% for item in similar_bouquets %}
+      <div class="bouquet-card">
+        <a href="/catalog/{{ item.slug }}" class="bouquet-card-image-wrap">
+          <img src="{{ item.cover_image }}" alt="{{ item.title }}" class="bouquet-card-image" loading="lazy">
+        </a>
+        <div class="bouquet-card-body">
+          <a href="/catalog/{{ item.slug }}">
+            <h4 class="bouquet-card-title">{{ item.title }}</h4>
+          </a>
+          <div class="bouquet-card-dimensions">{{ item.dimensions }}</div>
+          <div class="bouquet-card-footer">
+            <div class="bouquet-price-value">{{ item.price | format_price }} ₽</div>
+            <a href="/order?bouquet={{ item.slug }}" class="btn btn-primary btn-sm">Хочу такой</a>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+  {% endif %}
+</div>
+{% endblock %}

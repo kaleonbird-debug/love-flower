@@ -1,0 +1,174 @@
+{% extends "base.html" %}
+
+{% block title %}Оформление заказа — ЛавФловер (LoveFlower){% endblock %}
+
+{% block content %}
+<div class="container order-page-wrap">
+  <div class="order-container-narrow">
+    <div style="text-align: center; margin-bottom: 32px;">
+      <h1 style="font-family: var(--font-serif); font-size: 2.4rem; margin-bottom: 8px;">Оформление заявки</h1>
+      <p style="color: var(--color-text-secondary); font-size: 0.95rem;">
+        Заполните телефон и удобное время. Менеджер Евгения свяжется с вами в течение 10–15 минут для согласования доставки.
+      </p>
+    </div>
+
+    <div class="order-form-box">
+      <!-- Если выбран конкретный букет -->
+      {% if selected_bouquet %}
+      <div class="selected-item-preview">
+        <img src="{{ selected_bouquet.cover_image }}" alt="{{ selected_bouquet.title }}" class="selected-item-thumb">
+        <div>
+          <div style="font-size: 0.76rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--color-text-secondary);">
+            Выбранный букет
+          </div>
+          <div style="font-size: 1.25rem; font-weight: 700; margin: 2px 0;">
+            {{ selected_bouquet.title }}
+          </div>
+          <div style="font-size: 0.9rem; color: var(--color-text-secondary);">
+            Размер: <b>{{ size_map.get(selected_bouquet.size_code, selected_bouquet.size_code) }}</b> •
+            Стоимость: <b>{{ selected_bouquet.price | format_price }} ₽</b>
+          </div>
+        </div>
+      </div>
+      {% endif %}
+
+      <form action="/order" method="POST" id="order-form">
+        <!-- Скрытые / автоподставляемые поля -->
+        {% if selected_bouquet %}
+        <input type="hidden" name="bouquet_id" value="{{ selected_bouquet.id }}">
+        <input type="hidden" name="budget_amount" value="{{ selected_bouquet.price }}">
+        <input type="hidden" name="size_code" value="{{ selected_bouquet.size_code }}">
+        {% else %}
+        <!-- Если клиент зашел без букета: простой выбор параметров подбора -->
+        <div style="background: var(--color-surface); padding: 16px; border-radius: var(--radius-sm); border: 1px solid var(--color-border); margin-bottom: 24px;">
+          <div style="font-size: 0.85rem; font-weight: 700; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.05em;">
+            Параметры подбора букета:
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px;">
+            <div>
+              <label class="form-label">Бюджет</label>
+              <select name="budget_range" class="form-select">
+                <option value="3500-5500" {% if initial_budget == '3500-5500' %}selected{% endif %}>3 500 – 5 500 ₽ (популярный)</option>
+                <option value="0-3500" {% if initial_budget == '0-3500' %}selected{% endif %}>до 3 500 ₽ (комплимент)</option>
+                <option value="5500-10000" {% if initial_budget == '5500-10000' %}selected{% endif %}>5 500 – 10 000 ₽ (авторский)</option>
+                <option value="10000-15000" {% if initial_budget == '10000-15000' %}selected{% endif %}>10 000 – 15 000 ₽ (премиум)</option>
+                <option value="15000-plus" {% if initial_budget == '15000-plus' %}selected{% endif %}>от 15 000 ₽ (гранд)</option>
+              </select>
+            </div>
+
+            <div>
+              <label class="form-label">Размер</label>
+              <select name="size_code" class="form-select">
+                <option value="standard" {% if initial_size == 'standard' %}selected{% endif %}>Стандартный (M, 35–45 см)</option>
+                <option value="compact" {% if initial_size == 'compact' %}selected{% endif %}>Компактный (S, до 25 см)</option>
+                <option value="large" {% if initial_size == 'large' %}selected{% endif %}>Большой (L, от 50 см)</option>
+              </select>
+            </div>
+          </div>
+
+          <div>
+            <label class="form-label">Цветовая гамма (опционально)</label>
+            <select name="palette" class="form-select">
+              <option value="">На вкус флориста (гармоничная)</option>
+              <option value="tender" {% if initial_palette == 'tender' %}selected{% endif %}>Нежная / пастельная</option>
+              <option value="vibrant" {% if initial_palette == 'vibrant' %}selected{% endif %}>Яркая / сочная</option>
+              <option value="white" {% if initial_palette == 'white' %}selected{% endif %}>Монохром / белая</option>
+              <option value="deep" {% if initial_palette == 'deep' %}selected{% endif %}>Тёмная / драматичная</option>
+              <option value="seasonal" {% if initial_palette == 'seasonal' %}selected{% endif %}>Сезонная</option>
+            </select>
+          </div>
+        </div>
+        {% endif %}
+
+        <!-- Основные контакты клиента -->
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+          <div class="form-group">
+            <label for="customer_name" class="form-label">Ваше имя</label>
+            <input type="text" id="customer_name" name="customer_name" class="form-input" placeholder="Как к вам обращаться" autocomplete="name">
+          </div>
+
+          <div class="form-group">
+            <label for="customer_phone" class="form-label form-label-required">Номер телефона</label>
+            <input type="tel" id="customer_phone" name="customer_phone" class="form-input" placeholder="+7 (___) ___-__-__" required autocomplete="tel">
+            <div class="form-hint">Для отправки фото букета и связи курьера</div>
+          </div>
+        </div>
+
+        <!-- Способ получения -->
+        <div class="form-group">
+          <label class="form-label">Способ получения</label>
+          <div class="delivery-radio-group">
+            <label class="radio-card">
+              <input type="radio" name="delivery_type" value="delivery" checked>
+              <div class="radio-card-content">
+                <div>🚗 Доставка по городу (такси)</div>
+                <div style="font-size: 0.78rem; color: var(--color-text-secondary); font-weight: normal;">Тариф рассчитает менеджер</div>
+              </div>
+            </label>
+
+            <label class="radio-card">
+              <input type="radio" name="delivery_type" value="pickup">
+              <div class="radio-card-content">
+                <div>🏬 Самовывоз из салона</div>
+                <div style="font-size: 0.78rem; color: var(--color-text-secondary); font-weight: normal;">ул. Арбат, 15 (бесплатно)</div>
+              </div>
+            </label>
+          </div>
+        </div>
+
+        <!-- Адрес доставки -->
+        <div class="form-group" id="address-form-group">
+          <label for="delivery_address" class="form-label form-label-required">Адрес доставки</label>
+          <input type="text" id="delivery_address" name="delivery_address" class="form-input" placeholder="Улица, дом, подъезд, квартира/офис" required>
+        </div>
+
+        <!-- Дата и время -->
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+          <div class="form-group">
+            <label for="delivery_date" class="form-label">Дата получения</label>
+            <select id="delivery_date" name="delivery_date" class="form-select">
+              <option value="Сегодня">Сегодня</option>
+              <option value="Завтра">Завтра</option>
+              <option value="В ближайшие дни (уточнить)">В ближайшие дни (уточнить с флористом)</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="delivery_time_slot" class="form-label">Интервал времени</label>
+            <select id="delivery_time_slot" name="delivery_time_slot" class="form-select">
+              <option value="Как можно скорее (2 часа)">Как можно скорее (1.5–2 часа)</option>
+              <option value="10:00–12:00">10:00 – 12:00</option>
+              <option value="12:00–14:00">12:00 – 14:00</option>
+              <option value="14:00–16:00">14:00 – 16:00</option>
+              <option value="16:00–18:00">16:00 – 18:00</option>
+              <option value="18:00–21:00">18:00 – 21:00</option>
+              <option value="Ко времени (уточнить)">Ко времени (согласовать)</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Текст записки и комментарий -->
+        <div class="form-group">
+          <label for="comment" class="form-label">Текст для открытки / Пожелания к букету</label>
+          <textarea id="comment" name="comment" class="form-textarea" placeholder="Напишите текст открытки (бесплатно вложим в букет) или любые пожелания флористу..."></textarea>
+        </div>
+
+        <!-- Кнопка отправки -->
+        <div style="margin-top: 24px;">
+          <button type="submit" class="btn btn-primary btn-block btn-lg">
+            Отправить заявку &rarr;
+          </button>
+        </div>
+
+        <!-- Дисклеймер и согласие 152-ФЗ -->
+        <div class="order-disclaimer">
+          Нажимая «Отправить заявку», вы соглашаетесь с <a href="/privacy" target="_blank" style="text-decoration: underline;">Политикой обработки персональных данных</a>.
+          <br>
+          <i>Цветы — живой природный материал. Авторский состав может незначительно отличаться по оттенку и фактуре при сохранении общей цветовой гаммы, объема и настроения букета.</i>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

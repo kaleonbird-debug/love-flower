@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+
+{% block title %}Заявка #LF-{{ lead.id }} принята — ЛавФловер{% endblock %}
+
+{% block content %}
+<div class="container">
+  <div class="success-card">
+    <div class="success-icon-wrap">
+      ✓
+    </div>
+
+    <div class="success-order-num">Заявка #LF-{{ lead.id }}</div>
+    <h1 class="success-title">Спасибо за обращение!</h1>
+    <p class="success-desc">
+      Ваша заявка поступила менеджеру салона Евгении. Мы свяжемся с вами по телефону <b>{{ lead.customer_phone }}</b> в течение 10–15 минут для согласования деталей и отправки фото букета.
+    </p>
+
+    <!-- Сводка заявки -->
+    <div class="success-summary-box">
+      <div class="success-summary-row">
+        <span style="color: var(--color-text-secondary);">Букет / Заказ:</span>
+        <b>{{ lead.bouquet_title or "Индивидуальный подбор" }}</b>
+      </div>
+
+      {% if lead.budget_amount or lead.budget_range %}
+      <div class="success-summary-row">
+        <span style="color: var(--color-text-secondary);">Бюджет:</span>
+        <b>
+          {% if lead.budget_amount %}
+            {{ lead.budget_amount | format_price }} ₽
+          {% else %}
+            {{ budget_map.get(lead.budget_range, lead.budget_range) }} ₽
+          {% endif %}
+        </b>
+      </div>
+      {% endif %}
+
+      {% if lead.size_code %}
+      <div class="success-summary-row">
+        <span style="color: var(--color-text-secondary);">Размер:</span>
+        <b>{{ size_map.get(lead.size_code, lead.size_code) }}</b>
+      </div>
+      {% endif %}
+
+      <div class="success-summary-row">
+        <span style="color: var(--color-text-secondary);">Получение:</span>
+        <b>
+          {% if lead.delivery_type == 'pickup' %}
+            Самовывоз (ул. Арбат, 15)
+          {% else %}
+            Доставка курьером ({{ lead.delivery_address or "Адрес уточняется" }})
+          {% endif %}
+        </b>
+      </div>
+
+      <div class="success-summary-row">
+        <span style="color: var(--color-text-secondary);">Дата и время:</span>
+        <b>{{ lead.delivery_date }} ({{ lead.delivery_time_slot }})</b>
+      </div>
+
+      {% if lead.comment %}
+      <div class="success-summary-row" style="flex-direction: column; gap: 4px;">
+        <span style="color: var(--color-text-secondary);">Текст записки / пожелания:</span>
+        <div style="font-style: italic; background: var(--color-white); padding: 8px; border-radius: var(--radius-sm); border: 1px solid var(--color-border); margin-top: 4px;">
+          «{{ lead.comment }}»
+        </div>
+      </div>
+      {% endif %}
+    </div>
+
+    <div style="display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;">
+      <a href="/catalog" class="btn btn-primary">Вернуться в каталог</a>
+      <a href="/" class="btn btn-outline">На главную</a>
+    </div>
+  </div>
+</div>
+{% endblock %}

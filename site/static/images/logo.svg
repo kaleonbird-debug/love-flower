@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 80" width="100%" height="100%">
+  <defs>
+    <style>
+      .brand-title {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+        font-size: 26px;
+        font-weight: 700;
+        letter-spacing: 4px;
+        fill: #111111;
+        text-transform: uppercase;
+      }
+      .brand-sub {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+        font-size: 9px;
+        font-weight: 500;
+        letter-spacing: 3.5px;
+        fill: #666666;
+        text-transform: uppercase;
+      }
+      .flower-line {
+        fill: none;
+        stroke: #111111;
+        stroke-width: 1.75;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+      }
+      .flower-core {
+        fill: #111111;
+      }
+    </style>
+  </defs>
+
+  <!-- Flower Emblem (Minimalist Botanical Geometry) -->
+  <g transform="translate(15, 10)">
+    <!-- Central stem and bud base -->
+    <path class="flower-line" d="M30 54 V46 C30 40 30 35 30 30" />
+    <path class="flower-line" d="M30 46 C24 43 18 45 15 48 C16 43 21 40 28 41" />
+    <path class="flower-line" d="M30 43 C36 40 42 42 45 45 C44 40 39 37 32 38" />
+
+    <!-- Delicate Petals -->
+    <path class="flower-line" d="M30 30 C20 28 12 18 18 10 C24 3 30 14 30 30" />
+    <path class="flower-line" d="M30 30 C40 28 48 18 42 10 C36 3 30 14 30 30" />
+    <path class="flower-line" d="M30 30 C25 22 25 12 30 6 C35 12 35 22 30 30" />
+
+    <!-- Center bud pistil dot -->
+    <circle class="flower-core" cx="30" cy="18" r="1.5" />
+    <!-- Delicate circle frame -->
+    <circle class="flower-line" cx="30" cy="30" r="28" stroke-dasharray="1 2" stroke-width="0.8" opacity="0.6"/>
+  </g>
+
+  <!-- Brand Typography -->
+  <text x="85" y="41" class="brand-title">ЛАВФЛОВЕР</text>
+  <text x="86" y="59" class="brand-sub">LOVE FLOWER • САЛОН ЦВЕТОВ</text>
+</svg>

@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}ЛавФловер (LoveFlower) — Салон авторской флористики{% endblock %}</title>
+  <meta name="description" content="{% block meta_desc %}Цветочный салон «ЛавФловер». Быстрый выбор букета за 5 минут под ваш бюджет. Доставка по городу и бережная упаковка в аквапак.{% endblock %}">
+  <link rel="stylesheet" href="/static/css/style.css">
+  <link rel="icon" type="image/svg+xml" href="/static/images/logo.svg">
+</head>
+<body>
+  <!-- Шапка сайта -->
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="/" class="brand-link" title="ЛавФловер / LoveFlower">
+        <img src="/static/images/logo.svg" alt="ЛавФловер / LoveFlower" class="brand-logo-img">
+      </a>
+
+      <nav class="site-nav">
+        <a href="/catalog" class="nav-link {% if request.url.path == '/catalog' %}active{% endif %}">Каталог</a>
+        <a href="/how" class="nav-link {% if request.url.path == '/how' %}active{% endif %}">Доставка</a>
+        <a href="/order" class="nav-link {% if request.url.path == '/order' %}active{% endif %}">Заказать</a>
+      </nav>
+
+      <div class="header-actions">
+        <a href="tel:+79161234567" class="header-phone">+7 (916) 123-45-67</a>
+        <a href="/catalog" class="btn btn-outline btn-sm">Подобрать букет</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Основное содержимое страницы -->
+  <main class="site-main">
+    {% block content %}{% endblock %}
+  </main>
+
+  <!-- Подвал сайта -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-inner">
+        <div>
+          <div class="footer-brand-name">ЛавФловер • LoveFlower</div>
+          <p class="footer-brand-desc">
+            Авторский цветочный салон. Подбор букета за 5 минут без бесконечных согласований: бюджет, размер и палитра.
+          </p>
+        </div>
+
+        <div>
+          <div class="footer-nav-title">Навигация</div>
+          <ul class="footer-nav-list">
+            <li><a href="/catalog" class="footer-nav-link">Каталог букетов</a></li>
+            <li><a href="/how" class="footer-nav-link">Доставка и самовывоз</a></li>
+            <li><a href="/order" class="footer-nav-link">Форма заказа</a></li>
+            <li><a href="/privacy" class="footer-nav-link">Конфиденциальность</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <div class="footer-nav-title">Контакты</div>
+          <ul class="footer-nav-list">
+            <li class="footer-nav-link">г. Москва, ул. Арбат, д. 15</li>
+            <li class="footer-nav-link">Ежедневно: 10:00 — 21:00</li>
+            <li><a href="tel:+79161234567" class="footer-nav-link"><b>+7 (916) 123-45-67</b></a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <div>© 2026 Салон цветов «ЛавФловер» (LoveFlower). Все права защищены.</div>
+        <div>
+          <a href="/privacy" style="text-decoration: underline;">Политика конфиденциальности (152-ФЗ)</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="/static/js/main.js"></script>
+</body>
+</html>

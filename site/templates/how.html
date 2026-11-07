@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+
+{% block title %}Доставка и самовывоз — ЛавФловер{% endblock %}
+
+{% block content %}
+<div class="container info-page-wrap">
+  <div class="info-content-card">
+    <div style="text-align: center; margin-bottom: 36px;">
+      <h1 style="font-family: var(--font-serif); font-size: 2.4rem; margin-bottom: 8px;">Доставка и получение</h1>
+      <p style="color: var(--color-text-secondary); font-size: 1rem;">
+        Мы заботимся о том, чтобы каждый цветок доехал до адресата свежим, прохладным и безупречным.
+      </p>
+    </div>
+
+    <div class="info-grid">
+      <!-- Блок 1: Самовывоз -->
+      <div class="info-box">
+        <h2 class="info-box-title">🏬 Самовывоз из салона</h2>
+        <div class="info-box-text">
+          <p style="margin-bottom: 10px;"><b>Бесплатно</b> в любое удобное время работы салона.</p>
+          <ul style="padding-left: 20px; line-height: 1.6; margin-bottom: 12px;">
+            <li>Адрес: г. Москва, ул. Арбат, д. 15</li>
+            <li>Режим: ежедневно с 10:00 до 21:00</li>
+            <li>Готовность: от 30 минут с момента заказа</li>
+          </ul>
+          <p>Букет упаковывается в удобный крафтовый пакет с ручками для комфортной транспортировки.</p>
+        </div>
+      </div>
+
+      <!-- Блок 2: Доставка на такси / курьером -->
+      <div class="info-box">
+        <h2 class="info-box-title">🚗 Доставка по городу</h2>
+        <div class="info-box-text">
+          <p style="margin-bottom: 10px;"><b>Быстрая курьерская доставка на автомобиле</b> по тарифам сервиса (Яндекс Доставка / такси).</p>
+          <ul style="padding-left: 20px; line-height: 1.6; margin-bottom: 12px;">
+            <li>Сроки: от 45 до 90 минут по городу</li>
+            <li>Стоимость: рассчитывается менеджером по фактическому адресу без наценок</li>
+            <li>Интервал: ко времени или экспресс в течение 2 часов</li>
+          </ul>
+          <p>Курьер перевозит букет только в салоне автомобиля (не в багажнике).</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Блок упаковки -->
+    <div style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-md); padding: 32px; margin-bottom: 36px;">
+      <h3 style="font-size: 1.25rem; font-weight: 700; margin-bottom: 14px;">💧 Бережная транспортировка в аквапаке</h3>
+      <p style="color: var(--color-text-secondary); line-height: 1.6; margin-bottom: 12px;">
+        Каждый наш букет доставляется во временном <b>герметичном резервуаре с водой и питательным раствором (аквапаке)</b>. Букет может находиться в пути или ждать вручения до 6–8 часов без риска завять.
+      </p>
+      <p style="color: var(--color-text-secondary); line-height: 1.6;">
+        В холодное время года букеты дополнительно укутываются в термоизоляционный защитный слой. К каждому заказу мы бесплатно прикладываем фирменную открытку с вашим текстом и пакетик кризала для продления жизни цветов.
+      </p>
+    </div>
+
+    <!-- Блок оплаты -->
+    <div style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-md); padding: 32px; margin-bottom: 40px;">
+      <h3 style="font-size: 1.25rem; font-weight: 700; margin-bottom: 14px;">💳 Оплата</h3>
+      <p style="color: var(--color-text-secondary); line-height: 1.6;">
+        Оплата производится <b>после согласования букета и получения фотоотчета</b> от флориста. Вы можете оплатить заказ переводом по СБП, банковской картой по безопасной ссылке или наличными/картой при самовывозе в салоне.
+      </p>
+    </div>
+
+    <div style="text-align: center;">
+      <a href="/catalog" class="btn btn-primary btn-lg">Выбрать букет в каталоге &rarr;</a>
+    </div>
+  </div>
+</div>
+{% endblock %}
