@@ -79,13 +79,6 @@ def format_telegram_message(
     else:
         palette_display = PALETTE_MAP.get(palette, palette or "Любая / на вкус флориста")
 
-    # Повод
-    occasion = data.get("occasion")
-    if not occasion and bouquet and bouquet.get("occasion_names"):
-        occasion_display = ", ".join(bouquet["occasion_names"])
-    else:
-        occasion_display = OCCASION_MAP.get(occasion, occasion or "Универсальный")
-
     # Доставка
     deliv_type = data.get("delivery_type", "delivery")
     deliv_type_display = "Самовывоз из салона" if deliv_type == "pickup" else "Доставка по городу (такси)"
@@ -110,7 +103,6 @@ def format_telegram_message(
 💰 <b>Бюджет:</b> {budget_display} ₽
 📏 <b>Размер:</b> {size_display}
 🎨 <b>Палитра:</b> {palette_display}
-🎉 <b>Повод:</b> {occasion_display}
 ───────────────
 📅 <b>Когда:</b> {delivery_date} (интервал: {delivery_time})
 🚗 <b>Получение:</b> {deliv_type_display}{address_line}
