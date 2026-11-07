@@ -4,3 +4,6 @@ __pycache__/
 .env
 site/.venv/
 site/__pycache__/
+site/database/love_flower.db
+*.db-journal
+.DS_Store
