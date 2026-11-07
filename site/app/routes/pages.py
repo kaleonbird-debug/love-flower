@@ -1,6 +1,8 @@
 import re
+import os
 from typing import Optional
 from pathlib import Path
+from urllib.parse import quote
 from fastapi import APIRouter, Request, Form, HTTPException, Query, status
 from fastapi.responses import HTMLResponse, RedirectResponse
 from fastapi.templating import Jinja2Templates
@@ -228,6 +230,19 @@ async def route_submit_order_form(
     )
 
 
+def _build_telegram_link(lead: dict) -> str:
+    """Ссылка на чат с флористом в Telegram (если настроен бот компании)."""
+    username = (os.getenv("TELEGRAM_BOT_USERNAME") or "").strip().lstrip("@")
+    if not username:
+        return ""
+    request_id = lead.get("id", "")
+    lead_text = (
+        f"Вопрос по заявке LF-{request_id}"
+        if request_id else "Вопрос по заявке с сайта"
+    )
+    return f"https://t.me/{username}?text={quote(lead_text)}"
+
+
 @router.get("/order/success/{request_id}", response_class=HTMLResponse, summary="Экран подтверждения")
 async def route_order_success(request: Request, request_id: int):
     """Экран подтверждения успешного приёма заявки."""
@@ -242,6 +257,7 @@ async def route_order_success(request: Request, request_id: int):
             "lead": lead,
             "size_map": SIZE_MAP,
             "budget_map": BUDGET_MAP,
+            "telegram_link": _build_telegram_link(lead),
         }
     )
 

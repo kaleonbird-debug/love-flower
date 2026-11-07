@@ -23,7 +23,8 @@ class LeadRequestSchema(BaseModel):
     delivery_date: Optional[str] = "Сегодня"
     delivery_time_slot: Optional[str] = "Как можно скорее"
     customer_name: Optional[str] = Field(None, max_length=100)
-    customer_phone: str = Field(..., example="+79161234567")
+    customer_phone: str = Field(..., json_schema_extra={"example": "+79000000000"})
+    customer_telegram: Optional[str] = Field(None, max_length=100)
     delivery_type: str = Field("delivery", pattern="^(delivery|pickup)$")
     delivery_address: Optional[str] = None
     comment: Optional[str] = Field(None, max_length=1000)

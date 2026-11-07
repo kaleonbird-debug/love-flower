@@ -12,8 +12,29 @@
     <div class="success-order-num">Заявка #LF-{{ lead.id }}</div>
     <h1 class="success-title">Спасибо за обращение!</h1>
     <p class="success-desc">
-      Ваша заявка поступила менеджеру салона Евгении. Мы свяжемся с вами по телефону <b>{{ lead.customer_phone }}</b> в течение 10–15 минут для согласования деталей и отправки фото букета.
+      Ваша заявка отправлена флористу салона. Мы свяжемся с вами по телефону <b>{{ lead.customer_phone }}</b> в течение 10–15 минут для согласования деталей и отправки фото букета.
     </p>
+
+    <!-- Что дальше -->
+    <div class="success-summary-box" style="text-align: left;">
+      <div style="font-weight: 600; margin-bottom: 10px;">Что дальше:</div>
+      <div style="color: var(--color-text-secondary); line-height: 1.7;">
+        1. Флорист получает вашу заявку и видит все детали — бюджет, размер, пожелания.<br>
+        2. Вам позвонят в течение 10–15 минут и пришлют фото готового букета на согласование.<br>
+        3. После согласования букет соберут и передадут вам или курьеру.
+      </div>
+    </div>
+
+    <!-- Написать в Telegram -->
+    {% if telegram_link %}
+    <div class="success-summary-box" style="text-align: left;">
+      <div style="font-weight: 600; margin-bottom: 8px;">Есть вопрос по заявке?</div>
+      <p style="color: var(--color-text-secondary); margin: 0 0 12px;">
+        Напишите флористу в Telegram — ответит быстрее, чем по телефону.
+      </p>
+      <a href="{{ telegram_link }}" class="btn btn-primary" target="_blank" rel="noopener">Написать в Telegram</a>
+    </div>
+    {% endif %}
 
     <!-- Сводка заявки -->
     <div class="success-summary-box">

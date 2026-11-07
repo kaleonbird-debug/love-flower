@@ -58,6 +58,7 @@ CREATE TABLE IF NOT EXISTS requests (
     delivery_time_slot TEXT NOT NULL,                               -- Пример: "10:00-12:00" или "Как можно скорее"
     customer_name TEXT,                                             -- Имя заказчика
     customer_phone TEXT NOT NULL,                                   -- Номер в формате +7XXXXXXXXXX
+    customer_telegram TEXT,                                         -- Ник или телефон в Telegram клиента
     delivery_type TEXT NOT NULL DEFAULT 'delivery' CHECK (delivery_type IN ('delivery', 'pickup')),
     delivery_address TEXT,                                          -- Адрес доставки (если не самовывоз)
     comment TEXT,                                                   -- Текст для записки / пожелания флористу

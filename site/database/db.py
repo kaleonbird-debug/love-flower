@@ -217,9 +217,9 @@ def create_request(payload: Dict[str, Any]) -> int:
             INSERT INTO requests (
                 bouquet_id, custom_reference_info, budget_amount, budget_range,
                 size_code, palette, occasion, delivery_date, delivery_time_slot,
-                customer_name, customer_phone, delivery_type, delivery_address,
+                customer_name, customer_phone, customer_telegram, delivery_type, delivery_address,
                 comment, telegram_status, status
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'pending', 'new')
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'pending', 'new')
         """, (
             payload.get("bouquet_id"),
             payload.get("custom_reference_info"),
@@ -232,6 +232,7 @@ def create_request(payload: Dict[str, Any]) -> int:
             payload.get("delivery_time_slot"),
             payload.get("customer_name"),
             payload.get("customer_phone"),
+            payload.get("customer_telegram"),
             payload.get("delivery_type", "delivery"),
             payload.get("delivery_address"),
             payload.get("comment"),
